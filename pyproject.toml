@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "smig_trader"
+version = "0.1.0"
+description = ""
+authors = ["Mitchell Murphy <mitch.murphy@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+alpaca-py = "^0.31.0"
+jupyter = "^1.1.1"
+httpx = "^0.27.2"
+pandas-talib = {git = "https://github.com/femtotrader/pandas_talib.git"}
+prophet = "^1.1.6"
+autots = "^0.6.15"
+darts = "^0.30.0"
+pyql = "^3.0.0"
+pandas = "^2.2.3"
+finta = "^1.3"
+matplotlib = "^3.9.2"
+mplfinance = "^0.12.10b0"
+backtesting = "^0.3.3"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.9"
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
