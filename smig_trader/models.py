@@ -8,14 +8,14 @@ class StockObservation(SQLModel, table=True):
     __tablename__ = "stock_observation"
     id: str = Field(default_factory=lambda: str(ulid.new()), primary_key=True)
     symbol: str
-    timestamp: datetime = Field(index=True, unique=True)
+    timestamp: datetime = Field(index=True)
     open: float
     high: float
     low: float
     close: float
-    volume: float
-    trade_count: float
-    vwap: float
+    volume: Optional[float] = None
+    trade_count: Optional[float] = None
+    vwap: Optional[float] = None
 
 
 # Example usage:
