@@ -5,6 +5,7 @@ import ulid
 
 
 class StockObservation(SQLModel, table=True):
+    __tablename__ = "stock_observation"
     id: str = Field(default_factory=lambda: str(ulid.new()), primary_key=True)
     symbol: str
     timestamp: datetime = Field(index=True, unique=True)
