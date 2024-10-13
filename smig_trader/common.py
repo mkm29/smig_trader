@@ -14,7 +14,7 @@ settings = Settings(
     api_key=os.environ.get("ALPACA_PAPER_API_KEY"),
     secret_key=os.environ.get("ALPACA_PAPER_SECRET_KEY"),
 )
-print(f"Settings: {settings}")
+# print(f"Settings: {settings}")
 print(f"database_uri: {settings.database_uri}")
 # if no API_KEY or SECRET_KEY are passed this will raise and exception
 trader = SmigTrader(
