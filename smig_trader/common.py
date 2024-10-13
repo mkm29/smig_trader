@@ -1,10 +1,10 @@
-import os
-from collections import namedtuple
+from trader import SmigTrader
 
-AlpacaCreds = namedtuple("AlpacaCreds", ["api_key", "secret_key", "paper"])
-creds = AlpacaCreds(
-    os.getenv("ALPACA_PAPER_API_KEY"), os.getenv("ALPACA_PAPER_SECRET_KEY"), True
-)
-
-# if __name__ == "__main__":
-#     print(creds)
+# Example usage
+try:
+    trader = SmigTrader(
+        symbols=["AAPL", "TSLA"], start="2023-01-01", end="2023-12-31", paper=False
+    )
+    print(repr(trader))
+except ValueError as e:
+    print(f"Error: {e}")

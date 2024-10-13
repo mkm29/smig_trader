@@ -1,0 +1,37 @@
+version: '3.8'
+
+x-env-file: &default-env-file
+  env_file:
+    - ./.env
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smig_trader_app
+    <<: *default-env-file
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - smig_trader_network
+
+  db:
+    image: postgres:13.16-alpine3.20
+    container_name: smig_trader_db
+    <<: *default-env-file
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - smig_trader_network
+
+volumes:
+  db_data:
+
+networks:
+  smig_trader_network:
+    driver: bridge

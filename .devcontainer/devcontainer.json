@@ -1,0 +1,24 @@
+{
+  "name": "SmigTrader Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "settings": {
+    "python.pythonPath": "/usr/local/bin/python",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  },
+  "extensions": [
+    "ms-python.python",
+    "dbaeumer.vscode-eslint",
+    "ms-azuretools.vscode-docker"
+  ],
+  "postCreateCommand": "pip install -r requirements-dev.txt",
+  "remoteUser": "vscode",
+  "portsAttributes": {
+    "8000": {
+      "label": "SmigTrader App",
+      "onAutoForward": "notify"
+    }
+  }
+}

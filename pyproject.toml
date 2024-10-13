@@ -11,7 +11,6 @@ python = "^3.12"
 alpaca-py = "^0.31.0"
 jupyter = "^1.1.1"
 httpx = "^0.27.2"
-pandas-talib = {git = "https://github.com/femtotrader/pandas_talib.git"}
 prophet = "^1.1.6"
 autots = "^0.6.15"
 darts = "^0.30.0"
