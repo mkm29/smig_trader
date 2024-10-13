@@ -1,6 +1,10 @@
 import os
 from collections import namedtuple
 from datetime import datetime
+from alpaca.data.requests import StockBarsRequest
+from alpaca.data.timeframe import TimeFrame
+from alpaca.data.historical import StockHistoricalDataClient
+from alpaca.trading.client import TradingClient
 
 
 class SmigTrader:
@@ -41,6 +45,74 @@ class SmigTrader:
         # Handle start and end dates (convert strings to datetime objects)
         self._start = self._convert_to_datetime(start)
         self._end = self._convert_to_datetime(end)
+
+        # init clients
+        self._init_client()
+
+        # set account
+        self._account = self.trade_client.get_account()
+
+        # set data
+        self._data = {}
+        self._create_request_params()
+
+    def _init_client(self):
+        self._trade_client = TradingClient(
+            api_key=self.creds.api_key,
+            secret_key=self.creds.secret_key,
+            paper=self.creds.paper,
+        )
+        self._data_client = StockHistoricalDataClient(
+            api_key=self.creds.api_key, secret_key=self.creds.secret_key
+        )
+
+    def _create_request_params(self, *args, **kwargs):
+        _request_params = {}
+        if "timeframe" in kwargs:
+            _request_params["timeframe"] = kwargs["timeframe"]
+        else:
+            _request_params["timeframe"] = TimeFrame.Day
+        if "start" in kwargs:
+            _request_params["start"] = kwargs["start"]
+        else:
+            _request_params["start"] = self._start
+        if "end" in kwargs:
+            _request_params["end"] = kwargs["end"]
+        else:
+            _request_params["end"] = self._end
+        if "symbols" in kwargs and isinstance(kwargs["symbols"], list):
+            _request_params["symbol_or_symbols"] = kwargs["symbols"]
+        else:
+            _request_params["symbol_or_symbols"] = self._symbols
+        print(f"Request params: {_request_params}")
+        try:
+            self._request_params = StockBarsRequest(**_request_params)
+        except Exception as e:
+            raise ValueError(f"Invalid request parameters: {e}")
+
+    def _get_stock_bars(self):
+        # get stock bars/data
+        self._data = self.data_client.get_stock_bars(self._request_params)
+
+    @property
+    def account(self):
+        return self._account
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def trade_client(self):
+        if not hasattr(self, "_trade_client"):
+            self._init_client()
+        return self._trade_client
+
+    @property
+    def data_client(self):
+        if not hasattr(self, "_data_client"):
+            self._init_client()
+        return self._data_client
 
     @property
     def creds(self):

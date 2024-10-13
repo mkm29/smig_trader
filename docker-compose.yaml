@@ -24,8 +24,8 @@ services:
     <<: *default-env-file
     volumes:
       - db_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     networks:
       - smig_trader_network
 
