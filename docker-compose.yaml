@@ -17,13 +17,15 @@ services:
     - ./:/app
 
   db:
-    image: postgres:13.16-alpine3.20
+    image: postgres:15-alpine3.20
     container_name: smig_trader_db
     <<: *default-env-file
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - db_data:/var/lib/postgresql/data
-    # ports:
-    #   - "5432:5432"
+    ports:
+      - "15432:5432"
     networks:
       - smig_trader_network
 

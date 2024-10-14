@@ -1,13 +1,24 @@
 from datetime import datetime
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy import UniqueConstraint
+from typing import Optional, List
 import ulid
+
+
+class StockSymbol(SQLModel, table=True):
+    __tablename__ = "stock_symbol"
+
+    id: str = Field(default_factory=lambda: str(ulid.new()), primary_key=True)
+    symbol: str = Field(unique=True, index=True)
+
+    # Define relationship to StockObservation
+    observations: List["StockObservation"] = Relationship(back_populates="stock_symbol")
 
 
 class StockObservation(SQLModel, table=True):
     __tablename__ = "stock_observation"
     id: str = Field(default_factory=lambda: str(ulid.new()), primary_key=True)
-    symbol: str
+    symbol_id: str = Field(foreign_key="stock_symbol.id")
     timestamp: datetime = Field(index=True)
     open: float
     high: float
@@ -16,6 +27,10 @@ class StockObservation(SQLModel, table=True):
     volume: Optional[float] = None
     trade_count: Optional[float] = None
     vwap: Optional[float] = None
+
+    stock_symbol: StockSymbol = Relationship(back_populates="observations")
+
+    __table_args__ = (UniqueConstraint("symbol_id", "timestamp"),)
 
 
 # Example usage:
